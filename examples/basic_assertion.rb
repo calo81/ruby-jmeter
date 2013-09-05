@@ -10,4 +10,4 @@ test do
       end
     end
   end
-end.run(path: '/usr/share/jmeter/bin/', gui: true)
+end.run(path: '~/Programs/apache-jmeter-2.9/bin/', gui: true)

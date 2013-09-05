@@ -76,6 +76,7 @@ module RubyJmeter
     end
 
     alias_method :threads, :thread_group
+    alias_method :users, :thread_group
 
     ##
     # HTTP Samplers
