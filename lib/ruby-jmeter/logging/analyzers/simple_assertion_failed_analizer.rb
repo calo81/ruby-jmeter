@@ -5,7 +5,7 @@ class SimpleAssertionFailedAnalyzer
     errors.each do |error|
       logger.error(error.text)
     end
-    return 'error' if errors && errors.any?
+    (logger.error("#{errors.size} Errors encountered ") and return 'error') if errors && errors.any?
   end
 
   private
