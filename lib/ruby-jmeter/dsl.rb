@@ -1,3 +1,4 @@
+require_relative 'logging/analyzers/simple_assertion_failed_analizer'
 module RubyJmeter
   class ExtendedDSL < DSL
     include Parser
@@ -332,8 +333,10 @@ module RubyJmeter
     def run(params={})
       file(params)
       logger.warn "Test executing locally ..."
+      log_file = (params[:log] ? params[:log] : 'jmeter') + Time.now.to_i.to_s + '.log'
+      jtl_file = (params[:jtl] ? params[:jtl] : 'jmeter') + Time.now.to_i.to_s + '.jtl'
       properties = params[:properties] || "#{File.dirname(__FILE__)}/helpers/jmeter.properties"
-      cmd = "#{params[:path]}jmeter #{"-n" unless params[:gui] } -t #{params[:file]} -j #{params[:log] ? params[:log] : 'jmeter.log' } -l #{params[:jtl] ? params[:jtl] : 'jmeter.jtl' } -q #{properties}"
+      cmd = "#{params[:path]}jmeter #{"-n" unless params[:gui] } -t #{params[:file]} -j #{log_file} -l #{jtl_file} -q #{properties}"
       logger.debug cmd if params[:debug]
       Open3.popen2e("#{cmd}") do |stdin, stdout_err, wait_thr|
         while line = stdout_err.gets
@@ -345,7 +348,12 @@ module RubyJmeter
           abort "FAILED !!! #{cmd}"
         end
       end
-      logger.info "Local Results at: #{params[:jtl] ? params[:jtl] : 'jmeter.jtl'}"
+      analisys_result = SimpleAssertionFailedAnalyzer.analyze(jtl_file, logger)
+      if analisys_result == 'error'
+        logger.error "LOAD TEST ERROR -- Local Results at: #{jtl_file}"
+      else
+        logger.info "Local Results at: #{jtl_file}"
+      end
     end
 
     def flood(token, params={})
