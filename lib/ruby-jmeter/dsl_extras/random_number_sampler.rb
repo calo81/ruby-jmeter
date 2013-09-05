@@ -11,7 +11,7 @@ RANDOM_NUMBER_VARIABLE
 
 module RubyJmeter
   class DSL
-    def random_number_sampler(params)
+    def random_value_sampler(params)
       variables(name: '_for_random_value_', value: params[:variable_values])
       beanshell_sampler({'query' =>  RANDOM_VARIABLE_SCRIPT.gsub('final_var_name', params[:final_variable])})
     end
