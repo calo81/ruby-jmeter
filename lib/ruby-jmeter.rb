@@ -15,4 +15,5 @@ require 'ruby-jmeter/helpers/user-agents'
 lib = File.dirname(File.absolute_path(__FILE__))
 Dir.glob(lib + '/ruby-jmeter/dsl/*', &method(:require))
 Dir.glob(lib + '/ruby-jmeter/plugins/*', &method(:require))
+require 'ruby-jmeter/dsl_extras/random_number_sampler'
 require 'ruby-jmeter/dsl'
