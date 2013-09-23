@@ -333,8 +333,8 @@ module RubyJmeter
     def run(params={})
       file(params)
       logger.warn "Test executing locally ..."
-      log_file = (params[:log] ? params[:log] : 'jmeter') + Time.now.to_i.to_s + '.log'
-      jtl_file = (params[:jtl] ? params[:jtl] : 'jmeter') + Time.now.to_i.to_s + '.jtl'
+      log_file = 'output/' + (params[:log] ? params[:log] : 'jmeter') + Time.now.to_i.to_s + '.log'
+      jtl_file = 'output/' +  (params[:jtl] ? params[:jtl] : 'jmeter') + Time.now.to_i.to_s + '.jtl'
       properties = params[:properties] || "#{File.dirname(__FILE__)}/helpers/jmeter.properties"
       cmd = "#{params[:path]}jmeter #{"-n" unless params[:gui] } -t #{params[:file]} -j #{log_file} -l #{jtl_file} -q #{properties}"
       logger.debug cmd if params[:debug]
